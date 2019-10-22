@@ -48,4 +48,4 @@ sudo chmod -R 777 /var/db/lockdown/
 
 Get bot token. Invite bot to discord server
 
-Open config.example.py and save as config.py - edit config valyes
+Open config.example.py and save as config.py - edit config values
