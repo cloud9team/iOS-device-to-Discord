@@ -48,15 +48,24 @@ async def sc(ctx, device):
     stdout = MyOut.communicate()
     await bot.send_file(discord.Object(id=bot_channel), name+'.png')
 
-#@bot.command(pass_context=True)
-#async def log(ctx, device):
-# in progress: Send last 10 lines of full log of device
-#    args = message.content.split(" ")
-#    name = '"*'+args[1]+'*"'
-#    fulllog = '"*full*"'
-#    MyOut = subprocess.Popen(['find', '.', '-amin' , '1', '-name', name, '!', '-name', fulllog, '-print'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-#    stdout,stderr = MyOut.communicate()
-        #await client.send_message(message.channel, r[0] )
+@bot.command(pass_context=True)
+async def listapps(ctx, device):
+    name = str(device)
+    MyOut = subprocess.Popen(['ideviceinstaller', '-u', devices.get(name), '--list-apps'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    stdout,stderr = MyOut.communicate()
+    await bot.send_message(discord.Object(id=bot_channel), stdout.decode("utf-8") )
 
+@bot.command(pass_context=True)
+async def delete(ctx, device):
+    name = str(device)
+    MyOut = subprocess.Popen(['ideviceinstaller', '-u', devices.get(name), '--uninstall', 'com.apple.test.RealDeviceMap-UIControlUITests-Runner'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    stdout,stderr = MyOut.communicate()
+    await bot.send_message(discord.Object(id=bot_channel), stdout.decode("utf-8") )
+
+@bot.command(pass_context=True)
+async def mac(ctx):
+    MyOut = subprocess.Popen(['screencapture', 'mac.jpg'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+    stdout = MyOut.communicate()
+    await bot.send_file(discord.Object(id=bot_channel), 'mac.jpg')
 
 bot.run(TOKEN)
