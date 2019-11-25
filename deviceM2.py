@@ -30,7 +30,7 @@ async def on_ready():
 
 @bot.command(pass_context=True)
 async def help(ctx):
-    msg = "!sc <device_name> - screenshot of device\n!reboot <device_name> - reboot device\n!log <device_name> tail last 10 lines of device"
+    msg = "!delete <device_name> - delete RDM-UIC from device\n!listapps <device_name> - list apps on device\n!mac - screenshot of computer\n!reboot <device_name> - reboot device\n!sc <device_name> - screenshot of device"
     await bot.send_message(discord.Object(id=bot_channel), msg )
 
 @bot.command(pass_context=True)
