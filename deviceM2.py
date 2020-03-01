@@ -82,13 +82,31 @@ async def reboot(ctx, device):
 async def sc(ctx, device):
     """(p)sc <device_name> - Get screen capture of device and upload to channel."""
     name = str(device)
+    if name == 'all':
+        for k,v in devices.items():
+            MyOut = subprocess.Popen(['idevicescreenshot', '-u', v, k+'.png'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            stdout = MyOut.communicate()
+            await bot.send_file(discord.Object(id=bot_channel), k+'.png')
+            await bot.send_message(discord.Object(id=bot_channel), k)
+    else:
+        try:
+            MyOut = subprocess.Popen(['idevicescreenshot', '-u', devices.get(name), device+'.png'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+            stdout = MyOut.communicate()
+            await bot.send_file(discord.Object(id=bot_channel), name+'.png')
+        except:
+            await bot.send_message(discord.Object(id=bot_channel), "No device named " + name + " found.")
+
+@bot.command(pass_context=True)
+async def dl(ctx, message:str):
     try:
-        MyOut = subprocess.Popen(['idevicescreenshot', '-u', devices.get(name), device+'.png'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
-        stdout = MyOut.communicate()
-        await bot.send_file(discord.Object(id=bot_channel), name+'.png')
+        url = (message)
+        print(url, file=open('/Users/pokemon/Desktop/automation/ipa/url.txt', 'w'))
+        MyOut = subprocess.Popen(['megadl', url],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
+        stdout,stderr = MyOut.communicate()
+        await bot.send_message(discord.Object(id=bot_channel), stdout.decode("utf-8") )
     except:
-        await bot.send_message(discord.Object(id=bot_channel), "No device named " + name + " found.")
-    
+        await bot.send_message(discord.Object(id=bot_channel), "Download failed")        
+        
 @bot.command(pass_context=True)
 async def listapps(ctx, device):
     name = str(device)
@@ -124,6 +142,7 @@ async def delete(ctx, device, app):
 
 @bot.command(pass_context=True)
 async def mac(ctx):
+   #MyOut2 = subprocess.run(['/path_to/sleepdisplay/dist/1.1/x64/SleepDisplay', '-wake'])
     MyOut = subprocess.Popen(['screencapture', 'mac.jpg'],stdout=subprocess.PIPE,stderr=subprocess.STDOUT)
     stdout = MyOut.communicate()
     await bot.send_file(discord.Object(id=bot_channel), 'mac.jpg')

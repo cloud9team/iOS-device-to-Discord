@@ -44,6 +44,14 @@ brew unlink ideviceinstaller && brew link ideviceinstaller
 
 sudo chmod -R 777 /var/db/lockdown/
 
+2.a if you want to add the ability to quickly download files with Mega.NZ use https://megatools.megous.com/
+
+brew megatools
+
+2.b I got issues with screenshots of the Mac. I would end up with screenshots from before my screen went to sleep. i use https://github.com/kimhunter/SleepDisplay for that.
+
+Download it and edit the path to it.
+
 3. Create a discord bot at https://discordapp.com/developers/applications/
 
 Get bot token. Invite bot to discord server
